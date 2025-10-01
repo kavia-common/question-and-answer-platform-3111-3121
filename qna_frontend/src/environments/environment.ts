@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  // IMPORTANT: Set this via .env mapping in deployment if needed
-  // You can change this in production environment file if required
-  apiBaseUrl: '/api', // default proxied path or relative path; adjust if backend is on another host
+  // IMPORTANT: Set this via .env mapping in deployment if needed.
+  // Backend base URL for local development. FastAPI runs on port 3001.
+  apiBaseUrl: 'http://localhost:3001',
   appName: 'QnA Platform',
 };
