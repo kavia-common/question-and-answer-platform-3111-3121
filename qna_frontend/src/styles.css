@@ -1,12 +1,12 @@
-/* Global styles for minimalistic design */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  background-color: #ffffff;
+/* Global styles matching Ocean Professional theme */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  background-color: #f9fafb;
+  color: #111827;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
+a { color: #2563EB; }
+button { font-family: inherit; }
+input, textarea, select { font-family: inherit; }
+::selection { background: #2563EB; color: #ffffff; }

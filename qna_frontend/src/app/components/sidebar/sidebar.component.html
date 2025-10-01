@@ -1,0 +1,15 @@
+<aside class="sidebar" [class.closed]="!open">
+  <div class="sidebar-header">
+    <h3>History</h3>
+  </div>
+  <div class="list">
+    <button
+      class="item"
+      [class.active]="q.id === selectedId"
+      *ngFor="let q of questions; trackBy: trackById"
+      (click)="selectQuestion.emit(q)">
+      <div class="title">{{ q.title }}</div>
+      <div class="meta">{{ q.created_at | date:'short' }}</div>
+    </button>
+  </div>
+</aside>

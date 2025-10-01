@@ -1,0 +1,67 @@
+<app-header (toggleSidebar)="toggleSidebar()"></app-header>
+
+<div class="layout">
+  <app-sidebar
+    [open]="sidebarOpen"
+    [questions]="questions"
+    [selectedId]="selected?.id || null"
+    (selectQuestion)="onSelect($event)">
+  </app-sidebar>
+
+  <main class="content">
+    <section class="ask-card">
+      <h2>Ask a question</h2>
+      <p class="subtitle">Get AI-powered and community answers</p>
+
+      <form [formGroup]="askForm" (ngSubmit)="submitQuestion()" class="form">
+        <label>Title</label>
+        <input type="text" formControlName="title" placeholder="Brief summary of your question" />
+        <div class="error" *ngIf="askForm.controls.title.touched && askForm.controls.title.invalid">
+          Title is required (3-200 chars).
+        </div>
+
+        <label>Details</label>
+        <textarea rows="5" formControlName="body" placeholder="Provide more context for better answers"></textarea>
+        <div class="error" *ngIf="askForm.controls.body.touched && askForm.controls.body.invalid">
+          Details are required (min 3 chars).
+        </div>
+
+        <div class="actions">
+          <button class="primary" type="submit" [disabled]="submitting">
+            {{ submitting ? 'Submitting...' : 'Ask and generate AI answer' }}
+          </button>
+        </div>
+
+        <div class="server-error" *ngIf="submitError">{{ submitError }}</div>
+      </form>
+    </section>
+
+    <section class="answers-card" *ngIf="selected">
+      <div class="answers-header">
+        <div>
+          <h3>{{ selected!.title }}</h3>
+          <p class="question-body">{{ selected!.body }}</p>
+        </div>
+        <div class="meta">{{ selected!.created_at | date:'short' }}</div>
+      </div>
+
+      <div class="answers-list" [class.loading]="loadingAnswers">
+        <div *ngIf="loadingAnswers" class="placeholder">Loading answers...</div>
+
+        <div class="answer" *ngFor="let a of answers">
+          <div class="badge" [class.ai]="a.is_ai_generated"> {{ a.is_ai_generated ? 'AI' : 'User' }} </div>
+          <div class="body">
+            {{ a.body }}
+          </div>
+          <div class="footer">
+            <span class="time">{{ a.created_at | date:'short' }}</span>
+          </div>
+        </div>
+
+        <div *ngIf="!loadingAnswers && answers.length === 0" class="placeholder">
+          No answers yet. Be the first to ask or generate one above.
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
