@@ -7,7 +7,14 @@
   </div>
   <nav class="nav">
     <a class="nav-link" routerLink="/qna">Home</a>
-    <a class="nav-link" routerLink="/login">Login</a>
-    <a class="nav-link primary" routerLink="/signup">Sign up</a>
+
+    <ng-container *ngIf="(user$ | async) as user; else guest">
+      <span class="nav-link" aria-label="Current user">{{ user.full_name || user.email }}</span>
+      <a class="nav-link" href="#" (click)="logout($event)">Logout</a>
+    </ng-container>
+    <ng-template #guest>
+      <a class="nav-link" routerLink="/login">Login</a>
+      <a class="nav-link primary" routerLink="/signup">Sign up</a>
+    </ng-template>
   </nav>
 </header>
