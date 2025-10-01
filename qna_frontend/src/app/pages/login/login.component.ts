@@ -38,7 +38,17 @@ export class LoginComponent {
       await this.auth.loadMe().toPromise();
       this.router.navigate(['/qna']);
     } catch (e: any) {
-      this.error = e?.error?.detail || 'Login failed. Please check your credentials.';
+      const detail = e?.error?.detail;
+      if (typeof detail === 'string' && detail) {
+        this.error = detail;
+      } else if (Array.isArray(detail) && detail.length) {
+        const first = detail[0];
+        this.error = first?.msg || 'Validation error.';
+      } else if (e?.status === 0) {
+        this.error = 'Unable to reach server. Please check your connection or try again shortly.';
+      } else {
+        this.error = 'Login failed. Please check your credentials.';
+      }
     } finally {
       this.loading = false;
     }

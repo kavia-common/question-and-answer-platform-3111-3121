@@ -41,7 +41,20 @@ export class SignupComponent {
       await this.auth.loadMe().toPromise();
       this.router.navigate(['/qna']);
     } catch (e: any) {
-      this.error = e?.error?.detail || 'Signup failed. Please try again.';
+      // Prefer backend-provided message
+      const detail = e?.error?.detail;
+      if (typeof detail === 'string' && detail) {
+        this.error = detail;
+      } else if (Array.isArray(detail) && detail.length) {
+        // FastAPI validation errors array
+        const first = detail[0];
+        this.error = first?.msg || 'Validation error. Please review the form.';
+      } else if (e?.status === 0) {
+        // Network/CORS/backend unreachable
+        this.error = 'Unable to reach server. Please check your connection or try again shortly.';
+      } else {
+        this.error = 'Signup failed. Please try again.';
+      }
     } finally {
       this.loading = false;
     }

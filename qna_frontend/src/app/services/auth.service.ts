@@ -45,9 +45,14 @@ export class AuthService {
     /** Calls backend to create a user account. */
     const url = `${environment.apiBaseUrl}/auth/signup`;
     return this.http.post<UserOut>(url, payload).pipe(
-      tap((user) => {
-        // after signup, keep user in state (no token yet until login)
-        this.currentUserSubject.next(user);
+      tap({
+        next: (user) => {
+          // after signup, keep user in state (no token yet until login)
+          this.currentUserSubject.next(user);
+        },
+        error: () => {
+          // Let the caller display an appropriate error message
+        }
       })
     );
   }
